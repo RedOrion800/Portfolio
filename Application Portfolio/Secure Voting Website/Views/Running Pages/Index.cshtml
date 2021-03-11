@@ -1,0 +1,48 @@
+﻿@model IEnumerable<SecureVotingWebsite.Models.Running>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="formBox">
+    <h1>Candidates Running for Office</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Poll
+                </th>
+                <th>
+                    Candidate
+                </th>
+                <th>
+                    State
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Poll.PollName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Can.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Poll.Location)
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.RunId">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,131 @@
+﻿@model CandidatePollModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container formBox">
+    <h4>Add Candidate to Poll</h4>
+    <hr />
+    @if(ViewBag.success == "Success")
+    {
+        <h5>Candidate Successfully Added to Poll!</h5>
+    }
+    else if(ViewBag.success == "Fail")
+    {
+        <h5>Saving failed, please try again later.</h5>
+    }
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="CanId" class="control-label">Candidate</label>
+                    <select asp-for="CanId" id="canOptions" class="form-control" onchange="determineMatching()">
+                        <option value="-1">Pick a Candidate</option>
+                        @foreach (Candidates c in Model.candidates)
+                        {
+                            <option value="@c.CanId" data-locations="@c.Location">@c.Name (@c.Party)</option>
+                        }
+                    </select>
+                    <span id="canWarningText" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PollId" class="control-label">Poll</label>
+                    <select asp-for="PollId" id="pollOptions" class="form-control" onchange="determineMatching()">
+                        <option value="-1">Pick a Poll</option>
+                        @foreach (Polls p in Model.polls)
+                        {
+                            <option value="@p.PollId" data-locations="@p.Location">@p.PollName (@p.Location)</option>
+                        }
+                    </select>
+                    <span id="pollsWarningText" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input id="submitButton" type="submit" value="Create" class="btn btn-primary" disabled />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <a asp-controller="Home" asp-action="Index">Back to Homepage</a>
+    </div>
+</div>
+
+<!--This is commented out-->
+@*<div class="container">
+        <div class="card">
+            <div class="card-header">
+                <ul>
+                    @foreach (Running r in Model.runnings)
+                    {
+                        <li>RunID = @r.RunId | CanID = @r.CanId | PollID = @r.PollId</li>
+                    }
+                </ul>
+            </div>
+            <div class="card-body">
+                <ul>
+                    @foreach (Candidates c in Model.candidates)
+                    {
+                        <li>ID = @c.CanId | Name = @c.Name | @c.Location</li>
+                    }
+                </ul>
+            </div>
+            <div class="card-footer">
+                <ul>
+                    @foreach (Polls p in Model.polls)
+                    {
+                        <li>ID = @p.PollDate | Name = @p.PollName | @p.Location</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>*@
+
+<script>
+    function determineMatching() {
+
+        var canId = parseInt(document.getElementById('canOptions').value);
+        var pollId = parseInt(document.getElementById('pollOptions').value);
+
+        var canLocation = document.getElementById("canOptions").options[document.getElementById("canOptions").selectedIndex].dataset.locations;
+        var pollLocation = document.getElementById("pollOptions").options[document.getElementById("pollOptions").selectedIndex].dataset.locations;
+
+        var error = false;
+
+        if (canId == -1) {
+            error = true;
+            document.getElementById('canWarningText').innerHTML = 'Candidate is Required.';
+            document.getElementById('submitButton').disabled = true;
+        }
+
+        if(pollId == -1)
+        {
+            error = true;
+            document.getElementById('pollsWarningText').innerHTML = 'Poll is Required.';
+            document.getElementById('submitButton').disabled = true;
+        }
+
+        if (!error)
+        {
+            if(canLocation === pollLocation || pollLocation === "US")
+            {
+                document.getElementById('canWarningText').innerHTML = '';
+                document.getElementById('pollsWarningText').innerHTML = '';
+                document.getElementById('submitButton').disabled = false;
+            }
+            else
+            {
+                document.getElementById('canWarningText').innerHTML = 'States do not match.';
+                document.getElementById('pollsWarningText').innerHTML = 'States do not match.';
+                document.getElementById('submitButton').disabled = true;
+            }
+        }
+
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,75 @@
+﻿@model FoodTrackingFinalProject.Models.Userinfo
+
+@{
+    ViewData["Title"] = "Profile Page";
+}
+
+<div>
+    <h1>Profile</h1>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            First Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Fname)
+        </dd>
+        <dt class="col-sm-2">
+            Last Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Lname)
+        </dd>
+        <dt class="col-sm-2">
+            Birthday
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Birthday
+        </dd>
+        <dt class="col-sm-2">
+            Age
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Age
+        </dd>
+        <dt class="col-sm-2">
+            Start Weight
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Startweight) lbs.
+        </dd>
+        <dt class="col-sm-2">
+            Current Weight
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Currentweight) lbs.
+        </dd>
+        <dt class="col-sm-2">
+            Desired Weight
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Desiredweight) lbs.
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Height)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Height) inches
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sex)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sex)
+        </dd>
+        <dt class="col-sm-2">
+            Activity Level
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Activitylevel)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+</div>

@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    if (ViewBag.CaloriesAvailable == -10)//If there was an error.
+    {
+        <div class="text-center">
+            <h1>There was an error when calculating your data, please try again.</h1>
+        </div>
+    }
+    else//User data has been successfully calculated.
+    {
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+          google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawCaloriesChart);
+            google.charts.setOnLoadCallback(drawWeightChart);
+
+          function drawCaloriesChart() {
+
+            var data = google.visualization.arrayToDataTable([
+              ['Task', 'Calories'],
+              ['Calories Available', @ViewBag.CaloriesAvailable],
+              ['Calories Eaten', @ViewBag.CaloriesEaten]
+            ]);
+
+              var options = {
+                  title: 'Today\'s Calorie Stats',
+                  width: 450,
+                  height: 250,
+                  fontSize: 15,
+                  colors: ['#a5cbe9', '#eb6864'],
+              };
+
+            var chart = new google.visualization.PieChart(document.getElementById('calorieChart'));
+
+            chart.draw(data, options);
+            }
+
+            function drawWeightChart() {
+
+            var data = google.visualization.arrayToDataTable([
+              ['Task', 'Weight'],
+              ['Weight Lost', @ViewBag.WeightLost],
+              ['Weight Left', @ViewBag.WeightLeftToGo]
+            ]);
+
+                var options = {
+                    title: 'Weight Goal Stats',
+                    width: 450,
+                    height: 250,
+                    fontSize: 15,
+                    colors: ['#eb6864', '#a5cbe9'],
+                };
+
+            var chart = new google.visualization.PieChart(document.getElementById('weightChart'));
+
+            chart.draw(data, options);
+          }
+        </script>
+
+        <div class="text-center">
+            <h1>Your Statistics</h1>
+        </div>
+
+        <div class="row">
+            <div id="calorieChart" style="width: 450px; height: 250px;"></div>
+            <div id="weightChart" style="width: 450px; height: 250px;"></div>
+        </div>
+
+        <div class="text-center">
+            <form asp-action="Create" asp-controller="Foodinfoes">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row form-group">
+                    <div class="col-4">
+                        <!--dumb thing I do to make spacing nice, without dealing with css :)-->
+                        <!--feel free to do it right if you think this is stupid-->
+                        <!--I do the same thing. -Grey-->
+                    </div>
+                    <div class="col-3 text-center form-group">
+                        <h3>Quick Add Food</h3>
+                        <input type="text" name="Name" id="Name" class="form-control" />
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col-1">
+                        <h3 style="visibility: hidden;">filler</h3>
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                    <div class="col-4">
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+
+}
+else
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Please <a asp-area="Identity" asp-page="/Account/Register">Register</a> or <a asp-area="Identity" asp-page="/Account/Login">Login</a> to begin.</p>
+    </div>
+}

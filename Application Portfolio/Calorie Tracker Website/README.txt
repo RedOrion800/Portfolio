@@ -1,0 +1,2 @@
+This website was a group project for the final in my GUI Development class.  I included all of the files that are of importance that I edited.
+There are parts of it that were written by other people, but the UserinfoesController, the HomeController, the UserInfoInput.cs, and User Pages are all my code along with default built-in code from ASP.Net Core.

@@ -1,0 +1,40 @@
+﻿@model CandidatesImageModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Independents";
+    int canCount = 0;
+}
+<div class="text-center formBox">
+    <h1 class="display-4 font-weight-bold">Welcome to the Party!</h1>
+    <h2 class="text-center text-dark">Here are your Representatives</h2>
+    <p></p>
+</div>
+<div class="container">
+    @foreach (Candidates c in Model.candidates)
+    {
+        if (canCount % 3 == 0)
+        {
+        @:</div><div class="row">
+        }
+        <div class="col-md-4">
+            <div class="card" style="width: 300px;">
+                @if (c.Image != null)
+                {
+                    <img class="card-img-top" src="@Model.ImageDictionary.GetValueOrDefault(c.CanId)" alt="@c.Name" title="@c.Name" style="width: 300px; height: 300px"/>
+                }
+                else
+                {
+                    <img class="card-img-top" src="https://via.placeholder.com/300x300.png" alt="@c.Name" title="@c.Name" style="width: 300px; height: 300px"/>
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@c.Name</h5>
+                    <p class="card-text">@c.Location</p>
+                </div>
+            </div>
+        </div>
+        canCount++;
+    }
+</div>
+
